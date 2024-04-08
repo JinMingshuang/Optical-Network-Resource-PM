@@ -5,7 +5,7 @@
 CCAMP Working Group                                                C. Yu
 Internet-Draft                                       Huawei Technologies
 Intended status: Standards Track                            F. Peruzzini
-Expires: 25 April 2024                                               TIM
+Expires: 5 September 2024                                            TIM
                                                                 Y. Zheng
                                                             China Unicom
                                                                  I. Busi
@@ -16,11 +16,11 @@ Expires: 25 April 2024                                               TIM
                                                                    Nokia
                                                                  X. Zhao
                                                                    CAICT
-                                                         23 October 2023
+                                                            4 March 2024
 
 
      A YANG Data Model for Optical Resource Performance Monitoring
-               draft-yu-ccamp-optical-resource-pm-yang-02
+               draft-yu-ccamp-optical-resource-pm-yang-03
 
 Abstract
 
@@ -45,7 +45,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 25 April 2024.
+   This Internet-Draft will expire on 5 September 2024.
 
 
 
@@ -53,14 +53,14 @@ Status of This Memo
 
 
 
-Yu, et al.                Expires 25 April 2024                 [Page 1]
+Yu, et al.              Expires 5 September 2024                [Page 1]
 
-Internet-Draft         Performance Monitoring YANG          October 2023
+Internet-Draft         Performance Monitoring YANG            March 2024
 
 
 Copyright Notice
 
-   Copyright (c) 2023 IETF Trust and the persons identified as the
+   Copyright (c) 2024 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -101,18 +101,30 @@ Table of Contents
    10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  35
      10.1.  Normative References . . . . . . . . . . . . . . . . . .  35
      10.2.  Informative References . . . . . . . . . . . . . . . . .  37
-   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  38
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  38
+   Appendix A.  Use Case and Example . . . . . . . . . . . . . . . .  38
+     A.1.  Get the Performance Monitoring Capabilities of A Specific
+           Resource  . . . . . . . . . . . . . . . . . . . . . . . .  38
+     A.2.  Creating a Performance Monitoring Task  . . . . . . . . .  39
+     A.3.  Deleting a Performance Monitoring Task  . . . . . . . . .  39
 
 
 
-
-
-
-Yu, et al.                Expires 25 April 2024                 [Page 2]
+Yu, et al.              Expires 5 September 2024                [Page 2]
 
-Internet-Draft         Performance Monitoring YANG          October 2023
+Internet-Draft         Performance Monitoring YANG            March 2024
 
+
+     A.4.  Get the Current Pormance Monitoring Data of Resources . .  39
+     A.5.  Get the History Pormance Monitoring Data of Resources . .  40
+     A.6.  TCA . . . . . . . . . . . . . . . . . . . . . . . . . . .  42
+       A.6.1.  Create a TCA Profile  . . . . . . . . . . . . . . . .  43
+       A.6.2.  Get All the TCA Profiles  . . . . . . . . . . . . . .  43
+       A.6.3.  TCA Configuration on Resource . . . . . . . . . . . .  44
+       A.6.4.  Notification of TCA . . . . . . . . . . . . . . . . .  46
+       A.6.5.  Get All the Resources Associated with A Specific TCA
+               Profile . . . . . . . . . . . . . . . . . . . . . . .  46
+   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  47
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  47
 
 1.  Introduction
 
@@ -150,25 +162,17 @@ Internet-Draft         Performance Monitoring YANG          October 2023
    are on the NE level, which could help to reduce duplicated definition
    of performance indicators.
 
+
+
+
+Yu, et al.              Expires 5 September 2024                [Page 3]
+
+Internet-Draft         Performance Monitoring YANG            March 2024
+
+
    Currently, there are some existing documents related to performance
    monitoring in IETF, but there is no overlap with our current work.
    For example:
-
-
-
-
-
-
-
-
-
-
-
-
-Yu, et al.                Expires 25 April 2024                 [Page 3]
-
-Internet-Draft         Performance Monitoring YANG          October 2023
-
 
    [I-D.ietf-teas-actn-pm-telemetry-autonomics] provides a YANG data
    model that describes performance monitoring and scaling intent
@@ -213,18 +217,19 @@ Internet-Draft         Performance Monitoring YANG          October 2023
    The following terms are defined in [RFC6241] and are not redefined
    here: * configuration data * state data
 
+
+
+
+
+Yu, et al.              Expires 5 September 2024                [Page 4]
+
+Internet-Draft         Performance Monitoring YANG            March 2024
+
+
    The following terms are defined in [RFC8454] and are not redefined
    here: * CMI * MPI * MDSC * CNC * PNC
 
    //To Be Added: some explanation of performance indicator
-
-
-
-
-Yu, et al.                Expires 25 April 2024                 [Page 4]
-
-Internet-Draft         Performance Monitoring YANG          October 2023
-
 
 1.2.  Tree Diagram
 
@@ -272,14 +277,9 @@ Internet-Draft         Performance Monitoring YANG          October 2023
 
 
 
-
-
-
-
-
-Yu, et al.                Expires 25 April 2024                 [Page 5]
+Yu, et al.              Expires 5 September 2024                [Page 5]
 
-Internet-Draft         Performance Monitoring YANG          October 2023
+Internet-Draft         Performance Monitoring YANG            March 2024
 
 
 2.1.  Generic Resource
@@ -333,9 +333,9 @@ Internet-Draft         Performance Monitoring YANG          October 2023
 
 
 
-Yu, et al.                Expires 25 April 2024                 [Page 6]
+Yu, et al.              Expires 5 September 2024                [Page 6]
 
-Internet-Draft         Performance Monitoring YANG          October 2023
+Internet-Draft         Performance Monitoring YANG            March 2024
 
 
    support this kind of flexible method if using data API.  Therefore we
@@ -389,9 +389,9 @@ Internet-Draft         Performance Monitoring YANG          October 2023
 
 
 
-Yu, et al.                Expires 25 April 2024                 [Page 7]
+Yu, et al.              Expires 5 September 2024                [Page 7]
 
-Internet-Draft         Performance Monitoring YANG          October 2023
+Internet-Draft         Performance Monitoring YANG            March 2024
 
 
 2.3.  PerformanceManagementRetrieval
@@ -445,9 +445,9 @@ Internet-Draft         Performance Monitoring YANG          October 2023
 
 
 
-Yu, et al.                Expires 25 April 2024                 [Page 8]
+Yu, et al.              Expires 5 September 2024                [Page 8]
 
-Internet-Draft         Performance Monitoring YANG          October 2023
+Internet-Draft         Performance Monitoring YANG            March 2024
 
 
    rpcs:
@@ -501,9 +501,9 @@ Internet-Draft         Performance Monitoring YANG          October 2023
 
 
 
-Yu, et al.                Expires 25 April 2024                 [Page 9]
+Yu, et al.              Expires 5 September 2024                [Page 9]
 
-Internet-Draft         Performance Monitoring YANG          October 2023
+Internet-Draft         Performance Monitoring YANG            March 2024
 
 
    module: ietf-optical-resource-pm
@@ -557,9 +557,9 @@ Internet-Draft         Performance Monitoring YANG          October 2023
 
 
 
-Yu, et al.                Expires 25 April 2024                [Page 10]
+Yu, et al.              Expires 5 September 2024               [Page 10]
 
-Internet-Draft         Performance Monitoring YANG          October 2023
+Internet-Draft         Performance Monitoring YANG            March 2024
 
 
    retrieve the PM threshold values on a TP. * setTcaParameterProfile:
@@ -613,9 +613,9 @@ module: ietf-optical-resource-pm
 
 
 
-Yu, et al.                Expires 25 April 2024                [Page 11]
+Yu, et al.              Expires 5 September 2024               [Page 11]
 
-Internet-Draft         Performance Monitoring YANG          October 2023
+Internet-Draft         Performance Monitoring YANG            March 2024
 
 
    The function of enabling/disabling TCA on the resource can be
@@ -669,9 +669,9 @@ Internet-Draft         Performance Monitoring YANG          October 2023
 
 
 
-Yu, et al.                Expires 25 April 2024                [Page 12]
+Yu, et al.              Expires 5 September 2024               [Page 12]
 
-Internet-Draft         Performance Monitoring YANG          October 2023
+Internet-Draft         Performance Monitoring YANG            March 2024
 
 
 module: ietf-optical-resource-pm
@@ -725,9 +725,9 @@ module: ietf-optical-resource-pm
 
 
 
-Yu, et al.                Expires 25 April 2024                [Page 13]
+Yu, et al.              Expires 5 September 2024               [Page 13]
 
-Internet-Draft         Performance Monitoring YANG          October 2023
+Internet-Draft         Performance Monitoring YANG            March 2024
 
 
 module: ietf-optical-resource-pm
@@ -781,9 +781,9 @@ module: ietf-optical-resource-pm
 
 
 
-Yu, et al.                Expires 25 April 2024                [Page 14]
+Yu, et al.              Expires 5 September 2024               [Page 14]
 
-Internet-Draft         Performance Monitoring YANG          October 2023
+Internet-Draft         Performance Monitoring YANG            March 2024
 
 
             +--ro resource-type?       identityref
@@ -837,9 +837,9 @@ rpcs:
 
 
 
-Yu, et al.                Expires 25 April 2024                [Page 15]
+Yu, et al.              Expires 5 September 2024               [Page 15]
 
-Internet-Draft         Performance Monitoring YANG          October 2023
+Internet-Draft         Performance Monitoring YANG            March 2024
 
 
     Figure 1: Optical Resource Performance Monitoring tree diagram
@@ -893,9 +893,9 @@ Internet-Draft         Performance Monitoring YANG          October 2023
 
 
 
-Yu, et al.                Expires 25 April 2024                [Page 16]
+Yu, et al.              Expires 5 September 2024               [Page 16]
 
-Internet-Draft         Performance Monitoring YANG          October 2023
+Internet-Draft         Performance Monitoring YANG            March 2024
 
 
        The model fully conforms to the Network Management
@@ -949,9 +949,9 @@ Internet-Draft         Performance Monitoring YANG          October 2023
 
 
 
-Yu, et al.                Expires 25 April 2024                [Page 17]
+Yu, et al.              Expires 5 September 2024               [Page 17]
 
-Internet-Draft         Performance Monitoring YANG          October 2023
+Internet-Draft         Performance Monitoring YANG            March 2024
 
 
            leaf resource {
@@ -1005,9 +1005,9 @@ Internet-Draft         Performance Monitoring YANG          October 2023
 
 
 
-Yu, et al.                Expires 25 April 2024                [Page 18]
+Yu, et al.              Expires 5 September 2024               [Page 18]
 
-Internet-Draft         Performance Monitoring YANG          October 2023
+Internet-Draft         Performance Monitoring YANG            March 2024
 
 
            }
@@ -1061,9 +1061,9 @@ Internet-Draft         Performance Monitoring YANG          October 2023
 
 
 
-Yu, et al.                Expires 25 April 2024                [Page 19]
+Yu, et al.              Expires 5 September 2024               [Page 19]
 
-Internet-Draft         Performance Monitoring YANG          October 2023
+Internet-Draft         Performance Monitoring YANG            March 2024
 
 
        leaf resource {
@@ -1117,9 +1117,9 @@ Internet-Draft         Performance Monitoring YANG          October 2023
 
 
 
-Yu, et al.                Expires 25 April 2024                [Page 20]
+Yu, et al.              Expires 5 September 2024               [Page 20]
 
-Internet-Draft         Performance Monitoring YANG          October 2023
+Internet-Draft         Performance Monitoring YANG            March 2024
 
 
          config false;
@@ -1173,9 +1173,9 @@ Internet-Draft         Performance Monitoring YANG          October 2023
 
 
 
-Yu, et al.                Expires 25 April 2024                [Page 21]
+Yu, et al.              Expires 5 September 2024               [Page 21]
 
-Internet-Draft         Performance Monitoring YANG          October 2023
+Internet-Draft         Performance Monitoring YANG            March 2024
 
 
      grouping indicator-grouping {
@@ -1229,9 +1229,9 @@ Internet-Draft         Performance Monitoring YANG          October 2023
 
 
 
-Yu, et al.                Expires 25 April 2024                [Page 22]
+Yu, et al.              Expires 5 September 2024               [Page 22]
 
-Internet-Draft         Performance Monitoring YANG          October 2023
+Internet-Draft         Performance Monitoring YANG            March 2024
 
 
              key "resource";
@@ -1285,9 +1285,9 @@ Internet-Draft         Performance Monitoring YANG          October 2023
 
 
 
-Yu, et al.                Expires 25 April 2024                [Page 23]
+Yu, et al.              Expires 5 September 2024               [Page 23]
 
-Internet-Draft         Performance Monitoring YANG          October 2023
+Internet-Draft         Performance Monitoring YANG            March 2024
 
 
      grouping tca-profile-grouping {
@@ -1341,9 +1341,9 @@ Internet-Draft         Performance Monitoring YANG          October 2023
 
 
 
-Yu, et al.                Expires 25 April 2024                [Page 24]
+Yu, et al.              Expires 5 September 2024               [Page 24]
 
-Internet-Draft         Performance Monitoring YANG          October 2023
+Internet-Draft         Performance Monitoring YANG            March 2024
 
 
        leaf indicator-value-unit {
@@ -1397,9 +1397,9 @@ Internet-Draft         Performance Monitoring YANG          October 2023
 
 
 
-Yu, et al.                Expires 25 April 2024                [Page 25]
+Yu, et al.              Expires 5 September 2024               [Page 25]
 
-Internet-Draft         Performance Monitoring YANG          October 2023
+Internet-Draft         Performance Monitoring YANG            March 2024
 
 
          description
@@ -1453,9 +1453,9 @@ Internet-Draft         Performance Monitoring YANG          October 2023
 
 
 
-Yu, et al.                Expires 25 April 2024                [Page 26]
+Yu, et al.              Expires 5 September 2024               [Page 26]
 
-Internet-Draft         Performance Monitoring YANG          October 2023
+Internet-Draft         Performance Monitoring YANG            March 2024
 
 
      rpc get-all-current-pm-data {
@@ -1509,9 +1509,9 @@ Internet-Draft         Performance Monitoring YANG          October 2023
 
 
 
-Yu, et al.                Expires 25 April 2024                [Page 27]
+Yu, et al.              Expires 5 September 2024               [Page 27]
 
-Internet-Draft         Performance Monitoring YANG          October 2023
+Internet-Draft         Performance Monitoring YANG            March 2024
 
 
          leaf start-time {
@@ -1565,9 +1565,9 @@ Internet-Draft         Performance Monitoring YANG          October 2023
 
 
 
-Yu, et al.                Expires 25 April 2024                [Page 28]
+Yu, et al.              Expires 5 September 2024               [Page 28]
 
-Internet-Draft         Performance Monitoring YANG          October 2023
+Internet-Draft         Performance Monitoring YANG            March 2024
 
 
        }
@@ -1621,9 +1621,9 @@ Internet-Draft         Performance Monitoring YANG          October 2023
 
 
 
-Yu, et al.                Expires 25 April 2024                [Page 29]
+Yu, et al.              Expires 5 September 2024               [Page 29]
 
-Internet-Draft         Performance Monitoring YANG          October 2023
+Internet-Draft         Performance Monitoring YANG            March 2024
 
 
      grouping pm-data-instance-grouping {
@@ -1677,9 +1677,9 @@ Internet-Draft         Performance Monitoring YANG          October 2023
 
 
 
-Yu, et al.                Expires 25 April 2024                [Page 30]
+Yu, et al.              Expires 5 September 2024               [Page 30]
 
-Internet-Draft         Performance Monitoring YANG          October 2023
+Internet-Draft         Performance Monitoring YANG            March 2024
 
 
        leaf indicator-name {
@@ -1733,9 +1733,9 @@ Internet-Draft         Performance Monitoring YANG          October 2023
 
 
 
-Yu, et al.                Expires 25 April 2024                [Page 31]
+Yu, et al.              Expires 5 September 2024               [Page 31]
 
-Internet-Draft         Performance Monitoring YANG          October 2023
+Internet-Draft         Performance Monitoring YANG            March 2024
 
 
         Editor:   Yanlei Zheng
@@ -1789,9 +1789,9 @@ Internet-Draft         Performance Monitoring YANG          October 2023
 
 
 
-Yu, et al.                Expires 25 April 2024                [Page 32]
+Yu, et al.              Expires 5 September 2024               [Page 32]
 
-Internet-Draft         Performance Monitoring YANG          October 2023
+Internet-Draft         Performance Monitoring YANG            March 2024
 
 
      identity network-element {
@@ -1845,9 +1845,9 @@ Internet-Draft         Performance Monitoring YANG          October 2023
 
 
 
-Yu, et al.                Expires 25 April 2024                [Page 33]
+Yu, et al.              Expires 5 September 2024               [Page 33]
 
-Internet-Draft         Performance Monitoring YANG          October 2023
+Internet-Draft         Performance Monitoring YANG            March 2024
 
 
              "critical alarm will be caused if exceeds the threshold";
@@ -1901,9 +1901,9 @@ Internet-Draft         Performance Monitoring YANG          October 2023
 
 
 
-Yu, et al.                Expires 25 April 2024                [Page 34]
+Yu, et al.              Expires 5 September 2024               [Page 34]
 
-Internet-Draft         Performance Monitoring YANG          October 2023
+Internet-Draft         Performance Monitoring YANG            March 2024
 
 
    The NETCONF access control model [RFC8341] provides the means to
@@ -1957,9 +1957,9 @@ Internet-Draft         Performance Monitoring YANG          October 2023
 
 
 
-Yu, et al.                Expires 25 April 2024                [Page 35]
+Yu, et al.              Expires 5 September 2024               [Page 35]
 
-Internet-Draft         Performance Monitoring YANG          October 2023
+Internet-Draft         Performance Monitoring YANG            March 2024
 
 
    [ITU-T_G.874]
@@ -2013,9 +2013,9 @@ Internet-Draft         Performance Monitoring YANG          October 2023
 
 
 
-Yu, et al.                Expires 25 April 2024                [Page 36]
+Yu, et al.              Expires 5 September 2024               [Page 36]
 
-Internet-Draft         Performance Monitoring YANG          October 2023
+Internet-Draft         Performance Monitoring YANG            March 2024
 
 
    [RFC8341]  Bierman, A. and M. Bjorklund, "Network Configuration
@@ -2069,9 +2069,9 @@ Internet-Draft         Performance Monitoring YANG          October 2023
 
 
 
-Yu, et al.                Expires 25 April 2024                [Page 37]
+Yu, et al.              Expires 5 September 2024               [Page 37]
 
-Internet-Draft         Performance Monitoring YANG          October 2023
+Internet-Draft         Performance Monitoring YANG            March 2024
 
 
    [I-D.zheng-ccamp-client-pm-yang]
@@ -2095,6 +2095,497 @@ Internet-Draft         Performance Monitoring YANG          October 2023
               for Datastore Updates", RFC 8641, DOI 10.17487/RFC8641,
               September 2019, <https://www.rfc-editor.org/info/rfc8641>.
 
+Appendix A.  Use Case and Example
+
+A.1.  Get the Performance Monitoring Capabilities of A Specific Resource
+
+   RESTCONF URL: {{restconf}}/data/ietf-optical-resource-pm:resources/
+   resource-list={{resource}}
+
+   RESTCONF Method: GET
+
+   Sample Response:
+
+   {
+     "ietf-optical-resource-pm:resource-list": [
+       {
+         "resource": "resource-1"
+         "resource-type": "ietf-optical-resource-pm-types:port",
+         "holding-time": "24",
+         "pm-parameter-list": [
+           {
+             "layer-rate": "NA",
+             "indicator-name": "Temperature"
+           }
+         ]
+       }
+     ]
+   }
+
+
+
+
+Yu, et al.              Expires 5 September 2024               [Page 38]
+
+Internet-Draft         Performance Monitoring YANG            March 2024
+
+
+A.2.  Creating a Performance Monitoring Task
+
+   Precondition: The performance indicator should in the pm-parameter-
+   list of the resource.
+
+   RESTCONF URL: {{restconf}}/data/ietf-optical-resource-pm:performance-
+   monitoring/monitor-tasks
+
+   RESTCONF Method: POST
+
+   Sample Request:
+
+   {
+     "ietf-optical-resource-pm:monitor-task": [
+       {
+         "task-id": "task-id",
+         "resource-id": "resource-1",
+         "resource-type": "ietf-optical-resource-pm-types:port",
+         "task-name": "sample-task",
+         "task-cfg": {
+           "period": "ietf-optical-resource-pm-types:period-15-minutes",
+           "indicators": {
+             "indicator": [
+               {
+                 "indicator-name": "Temperature"
+               }
+             ]
+           }
+         }
+       }
+     ]
+   }
+
+A.3.  Deleting a Performance Monitoring Task
+
+   RESTCONF URL: {{restconf}}/data/ietf-optical-resource-pm:performance-
+   monitoring/monitor-tasks/monitor-task={{task-id}}
+
+   RESTCONF Method: DELETE
+
+A.4.  Get the Current Pormance Monitoring Data of Resources
+
+   Precondition: There should be performance monitoring tasks created
+   for each resource.
+
+   RESTCONF URL: {{restconf}}/operations/ietf-optical-resource-pm:get-
+   all-current-pm-data
+
+
+
+
+Yu, et al.              Expires 5 September 2024               [Page 39]
+
+Internet-Draft         Performance Monitoring YANG            March 2024
+
+
+   RESTCONF Method: POST
+
+   Sample Request:
+
+   {
+     "ietf-optical-resource-pm:input": {
+       "resources": [
+         "resource-1",
+         "resource-2"
+       ]
+     }
+   }
+
+   Sample Response:
+
+   {
+     "ietf-optical-resource-pm:output": {
+       "pm-data": {
+         "pm-data-list": [
+           {
+             "resource": "resource-1",
+             "collect-time": "2024-03-04T08:21:45.000Z",
+             "resource-name": "port:1",
+             "resource-type": "ietf-optical-resource-pm-types:port",
+             "ne-id": "ne-id",
+             "ne-name": "ne-name",
+             "indicator-data": {
+               "indicator-data-list": [
+                 {
+                   "indicator-name": "Temperature",
+                   "indicator-value": "40",
+                   "indicator-value-unit": "°C"
+                 }
+               ]
+             }
+           }
+         ]
+       }
+     }
+   }
+
+   Please note that, there is not a PM task created for resource-2, so
+   there is no data retrieved for it.
+
+A.5.  Get the History Pormance Monitoring Data of Resources
+
+   Precondition: There should be performance monitoring tasks created
+   for each resource.
+
+
+
+Yu, et al.              Expires 5 September 2024               [Page 40]
+
+Internet-Draft         Performance Monitoring YANG            March 2024
+
+
+   RESTCONF URL: {{restconf}}/operations/ietf-optical-resource-pm:get-
+   historic-pm-data
+
+   RESTCONF Method: POST
+
+   Sample Request:
+
+   {
+     "ietf-optical-resource-pm:input": {
+       "resources": [
+         "resources-1",
+         "resources-2"
+       ],
+       "start-time": "2024-03-04T08:21:46.000Z",
+       "end-time": "2024-04-04T09:21:46.000Z"
+     }
+   }
+
+   Sample Response:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Yu, et al.              Expires 5 September 2024               [Page 41]
+
+Internet-Draft         Performance Monitoring YANG            March 2024
+
+
+   {
+     "ietf-optical-resource-pm:output": {
+       "pm-data": {
+         "pm-data-list": [
+           {
+             "resource": "resource-1",
+             "collect-time": "2024-03-04T09:01:45.000Z",
+             "resource-name": "port:1",
+             "resource-type": "ietf-optical-resource-pm-types:port",
+             "ne-id": "ne-id",
+             "ne-name": "ne-name",
+             "indicator-data": {
+               "indicator-data-list": [
+                 {
+                   "indicator-name": "Temperature",
+                   "indicator-value": "40",
+                   "indicator-value-unit": "°C"
+                 }
+               ]
+             }
+           },
+           {
+             "resource": "resource-1",
+             "collect-time": "2024-03-04T09:16:45.000Z",
+             "resource-name": "port:1",
+             "resource-type": "ietf-optical-resource-pm-types:port",
+             "ne-id": "ne-id",
+             "ne-name": "ne-name",
+             "indicator-data": {
+               "indicator-data-list": [
+                 {
+                   "indicator-name": "Temperature",
+                   "indicator-value": "40",
+                   "indicator-value-unit": "°C"
+                 }
+               ]
+             }
+           }
+         ]
+       }
+     }
+   }
+
+   Please note that, there is not a PM task created for resource-2, so
+   there is no data retrieved for it.
+
+A.6.  TCA
+
+
+
+
+Yu, et al.              Expires 5 September 2024               [Page 42]
+
+Internet-Draft         Performance Monitoring YANG            March 2024
+
+
+A.6.1.  Create a TCA Profile
+
+   RESTCONF URL: {{restconf}}/data/ietf-optical-resource-pm:performance-
+   monitoring/tca-management/profiles
+
+   RESTCONF Method: POST
+
+   Sample Request:
+
+{
+  "ietf-optical-resource-pm:profile": [
+    {
+      "profile-id": "profile-id-1",
+      "profile-name": "Temperature-40-alert",
+      "tca-cfg": {
+        "tca-indicator": [
+          {
+            "indicator-name": "Temperature",
+            "indicator-value": "60",
+            "indicator-value-unit": "°C",
+            "threshold-type": "upperbound-trigger",
+            "period": "ietf-optical-resource-pm-types:period-15-minutes",
+            "severity": "ietf-optical-resource-pm-types:mayjor"
+          }
+        ]
+      }
+    }
+  ]
+}
+
+A.6.2.  Get All the TCA Profiles
+
+   RESTCONF URL: {{restconf}}/data/ietf-optical-resource-pm:performance-
+   monitoring/tca-management/profiles
+
+   RESTCONF Method: GET
+
+   Sample Response:
+
+
+
+
+
+
+
+
+
+
+
+
+
+Yu, et al.              Expires 5 September 2024               [Page 43]
+
+Internet-Draft         Performance Monitoring YANG            March 2024
+
+
+{
+  "ietf-optical-resource-pm:profiles": {
+    "profile": [
+      {
+        "profile-id": "profile-id-1",
+        "profile-name": "Temperature-40-alert",
+        "tca-cfg": {
+          "tca-indicator": [
+            {
+              "indicator-name": "Temperature",
+              "indicator-value": "60",
+              "indicator-value-unit": "°C",
+              "threshold-type": "upperbound-trigger",
+              "period": "ietf-optical-resource-pm-types:period-15-minutes",
+              "severity": "ietf-optical-resource-pm-types:mayjor"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
+
+A.6.3.  TCA Configuration on Resource
+
+A.6.3.1.  Apply An existing TCA Profile to a Resource
+
+   Precondition: There should be a corresponding performance monitoring
+   task created for this resource.
+
+   RESTCONF URL: {{restconf}}/data/ietf-optical-resource-pm:performance-
+   monitoring/tcas
+
+   RESTCONF Method: POST
+
+   Sample Request:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Yu, et al.              Expires 5 September 2024               [Page 44]
+
+Internet-Draft         Performance Monitoring YANG            March 2024
+
+
+   {
+     "ietf-optical-resource-pm:tca": [
+       {
+         "resource": "resource-1",
+         "resource-type": "ietf-optical-resource-pm-types:port",
+         "admin-status": "enabled",
+         "applied-profiles": {
+           "profile": [
+             {
+               "profile-id": "profile-id-1"
+             }
+           ]
+         }
+       }
+     ]
+   }
+
+A.6.3.2.  Configure TCA parameters directly on a Resource
+
+   Precondition: There should be a corresponding performance monitoring
+   task created for this resource.
+
+   RESTCONF URL: {{restconf}}/data/ietf-optical-resource-pm:performance-
+   monitoring/tcas
+
+   RESTCONF Method: POST
+
+   Sample Request:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Yu, et al.              Expires 5 September 2024               [Page 45]
+
+Internet-Draft         Performance Monitoring YANG            March 2024
+
+
+{
+  "ietf-optical-resource-pm:tca": [
+    {
+      "resource": "resource-1",
+      "resource-type": "ietf-optical-resource-pm-types:port",
+      "admin-status": "enabled",
+      "tca-cfg": {
+        "tca-indicator": [
+          {
+            "indicator-name": "Temperature",
+            "indicator-value": "60",
+            "indicator-value-unit": "°C",
+            "threshold-type": "upperbound-trigger",
+            "period": "ietf-optical-resource-pm-types:period-15-minutes",
+            "severity": "ietf-optical-resource-pm-types:mayjor"
+          }
+        ]
+      }
+    }
+  ]
+}
+
+A.6.4.  Notification of TCA
+
+   Note: To be added.
+
+A.6.5.  Get All the Resources Associated with A Specific TCA Profile
+
+   RESTCONF URL: {{restconf}}/operations/ietf-optical-resource-pm:get-
+   profile-associated-termination-points
+
+   RESTCONF Method: POST
+
+   Sample Request:
+
+   {
+     "ietf-optical-resource-pm:input": {
+       "profile-id": "profile-id-1"
+     }
+   }
+
+   Sample Response:
+
+
+
+
+
+
+
+
+
+Yu, et al.              Expires 5 September 2024               [Page 46]
+
+Internet-Draft         Performance Monitoring YANG            March 2024
+
+
+   {
+     "ietf-optical-resource-pm:output": {
+       "resource-list": [
+         "resource-1"
+       ]
+     }
+   }
+
 Acknowledgments
 
    This document was prepared using kramdown.
@@ -2103,82 +2594,39 @@ Authors' Addresses
 
    Chaode Yu
    Huawei Technologies
-
    Email: yuchaode@huawei.com
 
 
    Fabio Peruzzini
    TIM
-
    Email: fabio.peruzzini@telecomitalia.it
 
 
    Yanlei Zheng
    China Unicom
-
    Email: zhengyanlei@chinaunicom.cn
 
 
    Italo Busi
    Huawei Technologies
-
-
-
-
-Yu, et al.                Expires 25 April 2024                [Page 38]
-
-Internet-Draft         Performance Monitoring YANG          October 2023
-
-
    Email: italo.busi@huawei.com
 
 
    Aihua Guo
    Futurewei Technologies
-
    Email: aihuaguo.ietf@gmail.com
 
 
    Victor Lopez
    Nokia
-
    Email: victor.lopez@nokia.com
 
 
    Xing Zhao
    CAICT
-
    Email: zhaoxing@caict.ac.cn
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Yu, et al.                Expires 25 April 2024                [Page 39]
+Yu, et al.              Expires 5 September 2024               [Page 47]
