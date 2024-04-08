@@ -10,7 +10,7 @@
 <?rfc symrefs="yes"?>
 <?rfc comments="yes"?>
 
-<rfc ipr="trust200902" docName="draft-yu-ccamp-optical-resource-pm-yang-02" category="std">
+<rfc ipr="trust200902" docName="draft-yu-ccamp-optical-resource-pm-yang-03" category="std">
 
   <front>
     <title abbrev="Performance Monitoring YANG">A YANG Data Model for Optical Resource Performance Monitoring</title>
@@ -58,7 +58,7 @@
       </address>
     </author>
 
-    <date year="2023" month="October" day="23"/>
+    <date year="2024" month="March" day="04"/>
 
     
     <workgroup>CCAMP Working Group</workgroup>
@@ -1863,6 +1863,327 @@ module ietf-optical-resource-pm-types {
 
     </references>
 
+	
+<section anchor="appendix"><name>Use Case and Example</name>
+
+<section><name>Get the Performance Monitoring Capabilities of A Specific Resource</name>
+<t>RESTCONF URL: {{restconf}}/data/ietf-optical-resource-pm:resources/resource-list={{resource}}</t>
+<t>RESTCONF Method: GET</t>
+<t>Sample Response:</t>
+<figure><artwork type="ascii-art"><![CDATA[
+{
+  "ietf-optical-resource-pm:resource-list": [
+    {
+      "resource": "resource-1"
+      "resource-type": "ietf-optical-resource-pm-types:port",
+      "holding-time": "24",
+      "pm-parameter-list": [
+        {
+          "layer-rate": "NA",
+          "indicator-name": "Temperature"
+        }
+      ]
+    }
+  ]
+}
+]]></artwork></figure>
+</section>
+
+<section><name>Creating a Performance Monitoring Task</name>
+<t>Precondition: The performance indicator should in the pm-parameter-list of the resource.</t>
+<t>RESTCONF URL: {{restconf}}/data/ietf-optical-resource-pm:performance-monitoring/monitor-tasks</t>
+<t>RESTCONF Method: POST</t>
+<t>Sample Request:</t>
+<figure><artwork type="ascii-art"><![CDATA[
+{
+  "ietf-optical-resource-pm:monitor-task": [
+    {
+      "task-id": "task-id",
+      "resource-id": "resource-1",
+      "resource-type": "ietf-optical-resource-pm-types:port",
+      "task-name": "sample-task",
+      "task-cfg": {
+        "period": "ietf-optical-resource-pm-types:period-15-minutes",
+        "indicators": {
+          "indicator": [
+            {
+              "indicator-name": "Temperature"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
+]]></artwork></figure>
+</section>
+
+<section><name>Deleting a  Performance Monitoring Task</name>
+<t>RESTCONF URL: {{restconf}}/data/ietf-optical-resource-pm:performance-monitoring/monitor-tasks/monitor-task={{task-id}}</t>
+<t>RESTCONF Method: DELETE</t>
+</section>
+
+<section><name>Get the Current Pormance Monitoring Data of Resources</name>
+<t>Precondition: There should be performance monitoring tasks created for each resource.</t>
+<t>RESTCONF URL: {{restconf}}/operations/ietf-optical-resource-pm:get-all-current-pm-data</t>
+<t>RESTCONF Method: POST</t>
+<t>Sample Request:</t>
+<figure><artwork type="ascii-art"><![CDATA[
+{
+  "ietf-optical-resource-pm:input": {
+    "resources": [
+      "resource-1",
+      "resource-2"
+    ]
+  }
+}
+]]></artwork></figure>
+<t>Sample Response:</t>
+<figure><artwork type="ascii-art"><![CDATA[
+{
+  "ietf-optical-resource-pm:output": {
+    "pm-data": {
+      "pm-data-list": [
+        {
+          "resource": "resource-1",
+          "collect-time": "2024-03-04T08:21:45.000Z",
+          "resource-name": "port:1",
+          "resource-type": "ietf-optical-resource-pm-types:port",
+          "ne-id": "ne-id",
+          "ne-name": "ne-name",
+          "indicator-data": {
+            "indicator-data-list": [
+              {
+                "indicator-name": "Temperature",
+                "indicator-value": "40",
+                "indicator-value-unit": "°C"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
+]]></artwork></figure>
+<t>Please note that, there is not a PM task created for resource-2, so there is no data retrieved for it.</t>
+</section>
+
+<section><name>Get the History Pormance Monitoring Data of Resources</name>
+<t>Precondition: There should be performance monitoring tasks created for each resource.</t>
+<t>RESTCONF URL: {{restconf}}/operations/ietf-optical-resource-pm:get-historic-pm-data</t>
+<t>RESTCONF Method: POST</t>
+<t>Sample Request:</t>
+<figure><artwork type="ascii-art"><![CDATA[
+{
+  "ietf-optical-resource-pm:input": {
+    "resources": [
+      "resources-1",
+      "resources-2"
+    ],
+    "start-time": "2024-03-04T08:21:46.000Z",
+    "end-time": "2024-04-04T09:21:46.000Z"
+  }
+}
+]]></artwork></figure>
+<t>Sample Response:</t>
+<figure><artwork type="ascii-art"><![CDATA[
+{
+  "ietf-optical-resource-pm:output": {
+    "pm-data": {
+      "pm-data-list": [
+        {
+          "resource": "resource-1",
+          "collect-time": "2024-03-04T09:01:45.000Z",
+          "resource-name": "port:1",
+          "resource-type": "ietf-optical-resource-pm-types:port",
+          "ne-id": "ne-id",
+          "ne-name": "ne-name",
+          "indicator-data": {
+            "indicator-data-list": [
+              {
+                "indicator-name": "Temperature",
+                "indicator-value": "40",
+                "indicator-value-unit": "°C"
+              }
+            ]
+          }
+        },
+        {
+          "resource": "resource-1",
+          "collect-time": "2024-03-04T09:16:45.000Z",
+          "resource-name": "port:1",
+          "resource-type": "ietf-optical-resource-pm-types:port",
+          "ne-id": "ne-id",
+          "ne-name": "ne-name",
+          "indicator-data": {
+            "indicator-data-list": [
+              {
+                "indicator-name": "Temperature",
+                "indicator-value": "40",
+                "indicator-value-unit": "°C"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
+]]></artwork></figure>
+<t>Please note that, there is not a PM task created for resource-2, so there is no data retrieved for it.</t>
+</section>
+
+<section><name>TCA</name>
+
+<section><name>Create a TCA Profile</name>
+<t>RESTCONF URL: {{restconf}}/data/ietf-optical-resource-pm:performance-monitoring/tca-management/profiles</t>
+<t>RESTCONF Method: POST</t>
+<t>Sample Request:</t>
+<figure><artwork type="ascii-art"><![CDATA[
+{
+  "ietf-optical-resource-pm:profile": [
+    {
+      "profile-id": "profile-id-1",
+      "profile-name": "Temperature-40-alert",
+      "tca-cfg": {
+        "tca-indicator": [
+          {
+            "indicator-name": "Temperature",
+            "indicator-value": "60",
+            "indicator-value-unit": "°C",
+            "threshold-type": "upperbound-trigger",
+            "period": "ietf-optical-resource-pm-types:period-15-minutes",
+            "severity": "ietf-optical-resource-pm-types:mayjor"
+          }
+        ]
+      }
+    }
+  ]
+}
+]]></artwork></figure>
+</section>
+
+<section><name>Get All the TCA Profiles</name>
+<t>RESTCONF URL: {{restconf}}/data/ietf-optical-resource-pm:performance-monitoring/tca-management/profiles</t>
+<t>RESTCONF Method: GET</t>
+<t>Sample Response:</t>
+<figure><artwork type="ascii-art"><![CDATA[
+{
+  "ietf-optical-resource-pm:profiles": {
+    "profile": [
+      {
+        "profile-id": "profile-id-1",
+        "profile-name": "Temperature-40-alert",
+        "tca-cfg": {
+          "tca-indicator": [
+            {
+              "indicator-name": "Temperature",
+              "indicator-value": "60",
+              "indicator-value-unit": "°C",
+              "threshold-type": "upperbound-trigger",
+              "period": "ietf-optical-resource-pm-types:period-15-minutes",
+              "severity": "ietf-optical-resource-pm-types:mayjor"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
+]]></artwork></figure>
+</section>
+
+<section><name>TCA Configuration on Resource</name>
+
+<section><name>Apply An existing TCA Profile to a Resource</name>
+<t>Precondition: There should be a corresponding performance monitoring task created for this resource.</t>
+<t>RESTCONF URL: {{restconf}}/data/ietf-optical-resource-pm:performance-monitoring/tcas</t>
+<t>RESTCONF Method: POST</t>
+<t>Sample Request:</t>
+<figure><artwork type="ascii-art"><![CDATA[
+{
+  "ietf-optical-resource-pm:tca": [
+    {
+      "resource": "resource-1",
+      "resource-type": "ietf-optical-resource-pm-types:port",
+      "admin-status": "enabled",
+      "applied-profiles": {
+        "profile": [
+          {
+            "profile-id": "profile-id-1"
+          }
+        ]
+      }
+    }
+  ]
+}
+]]></artwork></figure>
+</section>
+
+<section><name>Configure TCA parameters directly on a Resource</name>
+<t>Precondition: There should be a corresponding performance monitoring task created for this resource.</t>
+<t>RESTCONF URL: {{restconf}}/data/ietf-optical-resource-pm:performance-monitoring/tcas</t>
+<t>RESTCONF Method: POST</t>
+<t>Sample Request:</t>
+<figure><artwork type="ascii-art"><![CDATA[
+{
+  "ietf-optical-resource-pm:tca": [
+    {
+      "resource": "resource-1",
+      "resource-type": "ietf-optical-resource-pm-types:port",
+      "admin-status": "enabled",
+      "tca-cfg": {
+        "tca-indicator": [
+          {
+            "indicator-name": "Temperature",
+            "indicator-value": "60",
+            "indicator-value-unit": "°C",
+            "threshold-type": "upperbound-trigger",
+            "period": "ietf-optical-resource-pm-types:period-15-minutes",
+            "severity": "ietf-optical-resource-pm-types:mayjor"
+          }
+        ]
+      }
+    }
+  ]
+}
+]]></artwork></figure>
+</section>
+
+</section>
+
+<section><name>Notification of TCA</name>
+<t>Note: To be added.</t>
+</section>
+
+<section><name>Get All the Resources Associated with A Specific TCA Profile</name>
+<t>RESTCONF URL: {{restconf}}/operations/ietf-optical-resource-pm:get-profile-associated-termination-points</t>
+<t>RESTCONF Method: POST</t>
+<t>Sample Request:</t>
+<figure><artwork type="ascii-art"><![CDATA[
+{
+  "ietf-optical-resource-pm:input": {
+    "profile-id": "profile-id-1"
+  }
+}
+]]></artwork></figure>
+<t>Sample Response:</t>
+<figure><artwork type="ascii-art"><![CDATA[
+{
+  "ietf-optical-resource-pm:output": {
+    "resource-list": [
+      "resource-1"
+    ]
+  }
+}
+]]></artwork></figure>
+</section>
+
+</section>
+
+
+</section>
 
 <section numbered="false" anchor="acknowledgments"><name>Acknowledgments</name>
 
@@ -1873,274 +2194,6 @@ module ietf-optical-resource-pm-types {
 
   </back>
 
-<!-- ##markdown-source:
-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
-BABv8AYYnB1IVq9hzbP8JgMa+X+7LZT59dUAAA==
-
--->
 
 </rfc>
 
