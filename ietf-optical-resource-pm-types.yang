@@ -1,10 +1,10 @@
-module ietf-optical-resource-pm-types {
+module ietf-device-resource-pm-types {
   yang-version 1.1;
-  namespace 
-  "urn:ietf:params:xml:ns:yang:ietf-optical-resource-pm-types";
-  
-  prefix optrpm-types;
-  
+  namespace
+  "urn:ietf:params:xml:ns:yang:ietf-device-resource-pm-types";
+
+  prefix dvcrpm-types;
+
   organization
     "IETF CCAMP Working Group";
   contact
@@ -28,15 +28,15 @@ module ietf-optical-resource-pm-types {
 
      Editor:   Aihua Guo
                <aihuaguo.ietf@gmail.com>";
-    
-  description 
-    "This module defines types model for optical performance 
-    monitoring which will be imported by ietf-performance-monitoring
+
+  description
+    "This module defines types model for device-level resource performance
+    monitoring which will be imported by ietf-device-resource-pm
     data model.
 
-    The model fully conforms to the Network Management 
+    The model fully conforms to the Network Management
     Datastore Architecture (NMDA).
-    
+
     Copyright (c) 2022 IETF Trust and the persons
     identified as authors of the code.  All rights reserved.
 
@@ -55,90 +55,96 @@ module ietf-optical-resource-pm-types {
     'MAY', and 'OPTIONAL' in this document are to be interpreted as
     described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
     they appear in all capitals, as shown here.";
-               
-  
+
+
   revision 2023-07-04 {
     description  "Initial revision.";
-    
+
   }
 
   identity resource-type {
     description "this is the base type of all the rerource type";
   }
-  
+
   identity network-element {
     base resource-type;
-	description "NE resource type";
+        description "NE resource type";
   }
-  
+
+    identity interface {
+        base resource-type;
+        description “Network interface”;
+	}
+
+
   identity board {
     base resource-type;
-	description "board resource type";
+        description "board resource type";
   }
-  
+
   identity termination-point {
     base resource-type;
-	description "Termination point resource";
+        description "Termination point resource";
   }
-  
+
   identity tunnel-termination-point {
     base resource-type;
-	description "Tunnel termination point resource";
-  }  
-  
-  identity period {
-    description 
-	  "this is the base type of all the performace monitoring priod 
-	  type.";
+        description "Tunnel termination point resource";
   }
-  
+
+  identity period {
+    description
+          "this is the base type of all the performace monitoring priod
+          type.";
+  }
+
   identity period-15-minutes {
     base period;
-	description 
-      "the during of monitoring task will be repeated at every 15 
-	  minutes";
+        description
+      "the during of monitoring task will be repeated at every 15
+          minutes";
   }
-  
+
   identity period-24-hours {
     base period;
-	description 
-      "the during of monitoring task will be repeated at every 24 
-	  hours";
+        description
+      "the during of monitoring task will be repeated at every 24
+          hours";
   }
-  
+
   identity severity {
-    description 
-	  "it is used to indicate what severity alarm will be caused if 
-	  exceeds the threshold";
+    description
+          "it is used to indicate what severity alarm will be caused if
+          exceeds the threshold";
   }
-  
+
   identity critical {
-    description 
-	  "critical alarm will be caused if exceeds the threshold";
-	base severity;
+    description
+          "critical alarm will be caused if exceeds the threshold";
+        base severity;
   }
-  
+
   identity mayjor {
-    description 
-	  "mayjor alarm will be caused if exceeds the threshold";
-	base severity;
+    description
+          "mayjor alarm will be caused if exceeds the threshold";
+        base severity;
   }
 
   identity minor {
-    description 
-	  "minor alarm will be caused if exceeds the threshold";
-	base severity;
+    description
+          "minor alarm will be caused if exceeds the threshold";
+        base severity;
   }
 
   identity warning {
-    description 
-	  "only a warning will be caused if exceeds the threshold";
-	base severity;
+    description
+          "only a warning will be caused if exceeds the threshold";
+        base severity;
   }
 
   identity layer-rate-type {
     description
-	  "It is used to indicate the layer rate of network element when 
-	  retrieving the pm parameters supported";
+          "It is used to indicate the layer rate of network element when
+          retrieving the pm parameters supported";
   }
 }

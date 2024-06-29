@@ -1,20 +1,20 @@
-module ietf-optical-resource-pm {
+
+module ietf-device-resource-pm {
   yang-version 1.1;
-  namespace "urn:ietf:params:xml:ns:yang:ietf-optical-resource-pm";
-  prefix optrpm;
-  
+  namespace "urn:ietf:params:xml:ns:yang:ietf-device-resource-pm";
+  prefix dvcrpm;
+
   import ietf-yang-types {
     prefix "yang";
   }
-  
-  import ietf-optical-resource-pm-types {
-    prefix "optrpm-types";
+
+  import ietf-device-resource-pm-types {
+    prefix "dvcrpm-types";
   }
 
-    
   organization
     "IETF CCAMP Working Group";
-    
+
   contact
     "WG Web:   <https://datatracker.ietf.org/wg/ccamp/>
      WG List:  <mailto:ccamp@ietf.org>
@@ -36,14 +36,14 @@ module ietf-optical-resource-pm {
 
      Editor:   Aihua Guo
                <aihuaguo.ietf@gmail.com>";
-    
-  description 
-    "This module defines a model for optical performance 
+
+  description
+    "This module defines a model for device-level performance
     monitoring.
 
-    The model fully conforms to the Network Management 
+    The model fully conforms to the Network Management
     Datastore Architecture (NMDA).
-    
+
     Copyright (c) 2022 IETF Trust and the persons
     identified as authors of the code.  All rights reserved.
 
@@ -62,34 +62,34 @@ module ietf-optical-resource-pm {
     'MAY', and 'OPTIONAL' in this document are to be interpreted as
     described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
     they appear in all capitals, as shown here.";
- 
-    
+
+
   revision 2023-07-04 {
     description  "Initial revision.";
   }
-  
+
   container performance-monitoring {
-    description 
+    description
       "the root node.";
-      
-    uses monitoring-tasks-grouping;
+
+	uses resource-info-grouping; 
     uses tca-management-grouping;
-    uses resource-info-grouping;
+	uses monitoring-tasks-grouping;	
   }
-  
+
   grouping resource-info-grouping {
-    description 
+    description
       "grouping of resources' PM capabilities related information";
-    
+
     container resources {
       description
         "resources' PM capabilities related information";
-        
+
       list resource-list {
         description
           "list of resource instances";
         key resource;
-        
+
         leaf resource {
           type union {
             type instance-identifier {
@@ -100,46 +100,33 @@ module ietf-optical-resource-pm {
            type yang:uuid;
           }
         }
-        
+
         leaf resource-type {
-          description 
+		  type identityref {
+            base dvcrpm-types:resource-type;
+          }
+		  
+		  config false;
+          description
             "the type of resource, such as NE, board or port";
-        
-          config false;
-          type identityref {
-            base optrpm-types:resource-type;
-          }          
+
         }
-        
+
         leaf holding-time {
-          description 
-            "Contains the time period in hours within which 24h PM 
+          description
+            "Contains the time period in hours within which 24h PM
             data records and 15min PM data records may be retrieved.
-            If the domain controller does not store PM data it is the 
+            If the domain controller does not store PM data it is the
             time supported in the NE";
-          
+          config false;
           type uint8;
           units "hour";
         }
-        
-        list pm-parameter-list {
-          must "../optrpm:resource-type=optrpm-types:network-element";
-          key "layer-rate";
-          
-          leaf layer-rate {
-            description 
-              "Layer rate of ME";
-              
-            type identityref {
-              base optrpm-types:layer-rate-type;
-            }
-          }
-          
-          leaf-list indicator-name {
-            type string;
-          }
-        }
-        
+
+		leaf-list indicator-name {
+               type string;
+             }
+
         leaf-list sub-resources {
           description
             "the identifier of the performace monitoring point of this
@@ -147,216 +134,218 @@ module ietf-optical-resource-pm {
             be termination point. If the resource is a termination
             point contained in this NE, the sub-resource should be the
             logic channel on this TP";
-            
+		  config false;
+		  
           type leafref {
-            path "../optrpm:resource";
-          }          
+            path "../dvcrpm:resource";
+		  
+          }
         }
       }
     }
   }
 
   grouping monitoring-tasks-grouping {
-    description 
+    description
       "grouping of performance monitoring task";
-      
+
     container monitor-tasks {
       description
         "Information of PM tasks";
-        
+
       list monitor-task {
-        description 
+        description
           "monitoring task list";
-          
+
         key task-id;
         uses task-instance-grouping;
       }
-    }  
+    }
   }
 
-  
+
   grouping task-instance-grouping {
-    description 
+    description
       "grouping of performance monitoring task. In this monitoring
       task, the client can specify a resource to run a monitor task
       and what kind of performance data need to be monitored.";
-    
+
     leaf task-id {
       description
         "identifier of the performance task";
       type yang:uuid;
     }
-    
+
     leaf resource {
-      description 
+      description
         "the identifier of network resource on which the performance
         monitoring task is running";
-      
+
       type leafref {
-        path "/optrpm:performance-monitoring/optrpm:resources" + 
-        "/optrpm:resource-list/optrpm:resource";
+        path "/dvcrpm:performance-monitoring/dvcrpm:resources" +
+        "/dvcrpm:resource-list/dvcrpm:resource";
       }
     }
-    
+
     leaf resource-type {
-      description 
+      description
         "the type of resource, such as NE, board or port";
-        
+
       config false;
       type identityref {
-        base optrpm-types:resource-type;
+        base dvcrpm-types:resource-type;
       }
     }
-    
+
     leaf task-name {
-      description 
+      description
         "the name of monitoring task";
-        
+
       type string;
     }
-    
+
     leaf admin-status {
       description
         "it is used to control enbling/disabling PM task";
-    
+
       type enumeration {
         enum enabled {
           description
             "it is used to enable the pm task, if the task is enabled,
             the task-staus should be running";
         }
-        
+
         enum disabled {
           description
-            "it is used to disenable the pm task, if the task is 
+            "it is used to disenable the pm task, if the task is
             disabled, the task-staus should be suspended";
         }
       }
     }
-    
+
     leaf task-status {
       config false;
-      description 
+      description
         "the status of monitoring task.";
-        
+
       type enumeration {
         enum running;
-      
+
         enum suspended;
-        
+
         enum abnormal;
       }
     }
 
     uses task-configuration-grouping;
   }
-  
+
   grouping task-configuration-grouping {
     description
       "grouping of pm task configuration";
-      
+
     container task-cfg {
-      description 
+      description
         "Configuration of the monitoring task";
-    
+
       leaf period {
-        description 
+        description
           "it is used to indicate the interval as per monitoring
           task";
         type identityref {
-          base optrpm-types:period;
+          base dvcrpm-types:period;
         }
       }
-      
+
       container indicators {
-        description 
+        description
           "performance indicators";
-          
+
         list indicator {
-          description 
+          description
             "list of PM indicators to be monitored";
-            
+
           key indicator-name;
           uses indicator-grouping;
         }
       }
-    }  
+    }
   }
-  
+
   grouping indicator-grouping {
-    description 
+    description
       "grouping of a monitoring indicator instance";
-      
+
     leaf indicator-name {
-      description 
+      description
         "performance indicator's name";
-        
+
       type string;
     }
-    
+
     leaf indicator-value-unit {
-      description 
+      description
         "unit of indicator value";
-        
+
       type string;
     }
   }
-  
+
   grouping tca-management-grouping {
-    description 
+    description
       "grouping of configuration and management for Threshol Crossing
       Alert";
-      
+
     container tca-management {
       description
         "configuration and management for Threshol Crossing Alert";
-      
+
       container profiles {
         description
           "the TCA profile in the whole network";
-      
+
         list profile {
           description
             "List of TCA profile instances";
-            
-          key "profile-id";          
+
+          key "profile-id";
           uses tca-profile-grouping;
         }
       }
-    
+
       container tcas {
         description
           "TCA configuration on the network resources.";
-          
+
         list tca {
           description
             "List of TCA configuration instances";
-        
+
           key "resource";
-        
+
           leaf resource {
-            description 
-              "the identifier of network resource on which threshold 
+            description
+              "the identifier of network resource on which threshold
               is configured for TCA purpose";
-          
+
             type leafref {
-              path "/optrpm:performance-monitoring/optrpm:resources" + 
-              "/optrpm:resource-list/optrpm:resource";
+              path "/dvcrpm:performance-monitoring/dvcrpm:resources" +
+              "/dvcrpm:resource-list/dvcrpm:resource";
             }
           }
-          
+
           leaf resource-type {
-            description 
+            description
               "the type of resource, such as NE, board or termination
               point";
-              
+
             config false;
-            
+
             type identityref {
-              base optrpm-types:resource-type;
+              base dvcrpm-types:resource-type;
             }
           }
-          
+
           leaf admin-status {
             description
               "it is used to control the validity of threshold";
@@ -366,81 +355,81 @@ module ietf-optical-resource-pm {
                 "if the admin-status of TCA configuration is enabled,
                 the threshold is effective";
               }
-        
+
               enum disabled {
                 description
-                  "if the admin-status of TCA configuration is 
+                  "if the admin-status of TCA configuration is
                   disabled, the threshold is not effective";
               }
             }
           }
-          
+
           uses tca-grouping;
         }
       }
     }
   }
-  
+
   grouping tca-profile-grouping {
     description
       "grouping of TCA profile instance";
-      
+
     leaf profile-id {
-      description 
+      description
         "identifier of threshold crossing alerrt profile";
-        
-      type yang:uuid;    
+
+      type yang:uuid;
     }
-    
+
     leaf profile-name {
-      description 
+      description
         "Name of the threshold crossing alerrt profile";
-        
+
       type string;
     }
-    
+
     container tca-cfg {
       description
         "detailed TCA configuration in a profile";
-        
+
       list tca-indicator {
         description
           "list of TCA configuration.";
-          
+
         key "indicator-name threshold-type period severity";
         uses tca-indicator-grouping;
-      }    
+      }
     }
   }
-  
+
   grouping tca-indicator-grouping {
     description
       "grouping for detail TCA configuration";
     leaf indicator-name {
       type string;
-      description 
+      description
         "name of the indicator";
     }
-    
+
     leaf indicator-value {
       mandatory true;
       type string;
-      description 
+      description
         "treshold value of the indicator";
     }
-    
+
     leaf indicator-value-unit {
       mandatory true;
       type string;
-      description 
+      description
         "unit of indicator's value";
     }
-    
+
     leaf threshold-type {
       description
-        "it is used to indicate the trigger/clearing condition of 
+        "it is used to indicate the trigger/clearing condition of
         alert upon the threshold";
-        
+
       type enumeration {
         enum upperbound-trigger {
           description
@@ -468,276 +457,256 @@ module ietf-optical-resource-pm {
     }
 
     leaf period {
-      description 
+      description
         "it is used to indicate the interval as per monitoring task";
-        
+
       type identityref {
-        base optrpm-types:period;
+        base dvcrpm-types:period;
       }
     }
-    
+
     leaf severity {
       description
         "it is used to indicate what severity level of alert would be
         triggered if not confirms to the threashold";
-        
+
       type identityref {
-        base optrpm-types:severity;
+        base dvcrpm-types:severity;
       }
     }
   }
-  
+
   grouping tca-grouping {
     description
       "grouping of TCA configuration";
-      
+
     container applied-profiles {
         description
           "Information of applied TCA profiles on this resource";
-          
+
       list profile {
           description
             "list of applied TCA profile";
-            
+
         key "profile-id";
-        
+
         leaf profile-id {
           description
             "identifier of the applied TCA profile";
-              
+
           type leafref {
-            path "../../../../../optrpm:profiles/optrpm:profile" +
-            "/optrpm:profile-id";
+            path "../../../../../dvcrpm:profiles/dvcrpm:profile" +
+            "/dvcrpm:profile-id";
           }
         }
       }
     }
     container tca-cfg {
-      description 
+      description
         "detailed configuration of TCA";
       list tca-indicator {
          description
            "list of tca indicator configuration";
         key "indicator-name threshold-type period severity";
         uses tca-indicator-grouping;
-      }    
-    }
-  }
-  
-
-  rpc get-all-current-pm-data {
-    description 
-      "this RPC is used to retrieve current performance data.";
-    
-    input {
-      leaf-list resources {
-        description 
-          "the identifier of resources from which current performace 
-          data is collected";
-          
-        type leafref {
-          path "/optrpm:performance-monitoring/optrpm:resources" + 
-          "/optrpm:resource-list/optrpm:resource";
-        }
       }
     }
-    output {
-      container pm-data {
-        description 
-          "result of current performance data";
-          
-        list pm-data-list {
-          description 
-            "list of curent performance data";
-            
-          key resource;
-          uses pm-data-instance-grouping;
-        }
-      }      
-    }
   }
-  
-  rpc get-historic-pm-data {
+
+
+  rpc get-pm-data {
     input {
-      description 
-      "this RPC is used to retrieve historic performance data.";
-      
+
       leaf-list resources {
         description
-          "the identifier of resources from which historic performace 
+          "the identifier of resources from which performace
           data is collected";
-          
+
         type leafref {
-          path "/optrpm:performance-monitoring/optrpm:resources" + 
-          "/optrpm:resource-list/optrpm:resource";
+          path "/dvcrpm:performance-monitoring/dvcrpm:resources" +
+          "/dvcrpm:resource-list/dvcrpm:resource";
         }
       }
-      
+
+	  leaf is-requesting-history-data {
+		description
+		"true indicate this is a request for historic data, then start-time and end-time should be assigned";
+		
+		type boolean;
+	  }
+	  
       leaf start-time {
-        description 
+        description
         "the starttime of performance data needed to be retrieved";
-        
+
         type yang:date-and-time;
       }
-      
+
       leaf end-time {
-        description 
+        description
         "the endtime of performance data needed to be retrieved";
-        
+
         type yang:date-and-time;
       }
     }
     output {
       container pm-data {
-        description 
+        description
           "result of historic performance data";
-          
+
         list pm-data-list {
-          description 
+          description
             "list of historic performance data";
-            
+
           key resource;
           uses pm-data-instance-grouping;
         }
-      }      
+      }
     }
   }
-  
+
   rpc clear-performance-monitoring-data {
-    input {
-      description 
-        "This operation clears (reset) the PM registers for a list of 
-        Measurement Points. Within the request for each Measurement 
+        description
+        "This operation clears (reset) the PM registers for a list of
+        Measurement Points. Within the request for each Measurement
         Point, it is possible to specify the granularity (15min, 24hr,
-        NA) and location (nearEnd and/or farEnd and/or bidirectional) 
+        NA) and location (nearEnd and/or farEnd and/or bidirectional)
         for the PM registers that are to be reset.";
-        
+    input {
+
       leaf-list resources {
         description
           "the identifier of measurement points to clear PM data";
-          
+
         type leafref {
-          path "/optrpm:performance-monitoring/optrpm:resources" + 
-          "/optrpm:resource-list/optrpm:resource";
+          path "/dvcrpm:performance-monitoring/dvcrpm:resources" +
+          "/dvcrpm:resource-list/dvcrpm:resource";
         }
       }
     }
     output {
       leaf-list failed-resources {
         description
-          "the identifier of measurement points which are failed to 
-          clear PM data. An empty list indicates that the total 
+          "the identifier of measurement points which are failed to
+          clear PM data. An empty list indicates that the total
           request was successful.";
-          
+
         type leafref {
-          path "/optrpm:performance-monitoring/optrpm:resources" + 
-          "/optrpm:resource-list/optrpm:resource";
-        }      
+          path "/dvcrpm:performance-monitoring/dvcrpm:resources" +
+          "/dvcrpm:resource-list/dvcrpm:resource";
+        }
       }
     }
   }
-  
-  rpc get-profile-associated-termination-points {
+
+  rpc get-profile-associated-resources {
     input {
-      description 
-        "This operation gets the set of TPs that are associated with 
-        a TCA parameter profile.";
-      
+
+
       leaf profile-id {
-        description 
-          "the identifier of profile which the client want to 
+        description
+          "the identifier of profile which the client want to
           retrieve";
-          
+
         type leafref {
-          path "/optrpm:performance-monitoring/optrpm:tca-management"
-          + "/optrpm:profiles/optrpm:profile/optrpm:profile-id";
+          path "/dvcrpm:performance-monitoring/dvcrpm:tca-management"
+          + "/dvcrpm:profiles/dvcrpm:profile/dvcrpm:profile-id";
         }
       }
-      
+
     }
     output {
       leaf-list resource-list {
         description
-          "Provides the set of Resources associated with the profile 
+          "Provides the set of Resources associated with the profile
           provided.";
-          
+
         type leafref {
-          path "/optrpm:performance-monitoring/optrpm:resources" + 
-          "/optrpm:resource-list/optrpm:resource";
+          path "/dvcrpm:performance-monitoring/dvcrpm:resources" +
+          "/dvcrpm:resource-list/dvcrpm:resource";
         }
       }
     }
   }
-  
-  
+
+
   grouping pm-data-instance-grouping {
-    description 
+    description
       "grouping for common attributes of performance data";
-      
+
     leaf resource {
-    description 
+    description
       "the identifier of network resource which is monitored.";
-    
+
       type leafref {
-        path "/optrpm:performance-monitoring/optrpm:resources" + 
-        "/optrpm:resource-list/optrpm:resource";
-      }      
+        path "/dvcrpm:performance-monitoring/dvcrpm:resources" +
+        "/dvcrpm:resource-list/dvcrpm:resource";
+      }
     }
-    
+
+	leaf-list task-id {
+	   description
+		"the task id list of the tasks from which the pm data is retrieved";
+
+		type yang:uuid;
+    }
+	
     leaf collect-time {
-      description 
+      description
         "the time of this data is collected";
-        
+
       type yang:date-and-time;
     }
-    
+
     leaf resource-type {
-      description 
+      description
         "the type of resource, such as NE, board or port";
-        
+
       type identityref {
-        base optrpm-types:resource-type; 
-      }      
+        base dvcrpm-types:resource-type;
+      }
     }
-    
+
     container indicator-data {
-      description 
+      description
         "grouping for historic performance data";
-        
+
       list indicator-data-list {
-        description 
+        description
           "list of historic performance data";
         key indicator-name;
-        
+
         uses indicator-data-instance-grouping;
       }
     }
   }
-  
+
   grouping indicator-data-instance-grouping {
-    description 
+    description
       "grouping for a performance data";
-      
+
     leaf indicator-name {
-      description 
+      description
         "name of performance data indicator";
-        
-      type string;     
+
+      type string;
     }
 
     leaf indicator-value {
-      description 
+      description
         "value of performance data";
-        
+
       type string;
     }
 
     leaf indicator-value-unit {
-      description 
+      description
         "unit of performance data value";
-        
+
       type string;
     }
   }
-  
-}    
+}
+
+
+
